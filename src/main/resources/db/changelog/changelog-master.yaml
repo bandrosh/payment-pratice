@@ -1,0 +1,109 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: LeoJ
+      changes:
+        - createTable:
+            tableName: accounts
+            columns:
+              - column:
+                  name: id
+                  type: varchar(255)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: document_number
+                  type: varchar(100)
+  - changeSet:
+      id: 2
+      author: LeoJ
+      changes:
+        - createTable:
+            tableName: operationsType
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(50)
+  - changeSet:
+      id: 3
+      author: LeoJ
+      changes:
+        - insert:
+            tableName: operationsType
+            columns:
+              - column:
+                  name: id
+                  value: "1"
+              - column:
+                  name: description
+                  value: "Cash Purchases"
+        - insert:
+            tableName: operationsType
+            columns:
+              - column:
+                  name: id
+                  value: "2"
+              - column:
+                  name: description
+                  value: "Installment Purchases"
+        - insert:
+            tableName: operationsType
+            columns:
+              - column:
+                  name: id
+                  value: "3"
+              - column:
+                  name: description
+                  value: "Withdraw"
+        - insert:
+            tableName: operationsType
+            columns:
+              - column:
+                  name: id
+                  value: "4"
+              - column:
+                  name: description
+                  value: "Payment"
+  - changeSet:
+      id: 4
+      author: LeoJ
+      changes:
+        - createTable:
+            tableName: transactions
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: accountId
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: "fk_transaction_account"
+                    references: "accounts(id)"
+              - column:
+                  name: operationTypeId
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: float
+                  constraints:
+                    nullable: false
+              - column:
+                  name: eventDate
+                  type: date
+                  constraints:
+                    nullable: false
