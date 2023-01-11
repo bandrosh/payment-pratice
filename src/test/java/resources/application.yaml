@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active: test
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
+    username: sa
+    password: sa
+  liquibase:
+    change-log: db/changelog/changelog-test-root.yaml
+    enabled: true
+    drop-first: false
+    default-schema: public
+    contexts: test

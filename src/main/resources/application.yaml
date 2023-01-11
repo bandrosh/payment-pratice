@@ -4,4 +4,12 @@ spring:
     username: postgres
     password: postgres
   liquibase:
-    change-log: liquibase.properties
+    change-log: db/changelog/changelog-master.yaml
+    enabled: true
+    drop-first: false
+    default-schema: public
+logging:
+  level:
+    root: INFO
+    com.pismo.paymentpractice: DEBUG
+

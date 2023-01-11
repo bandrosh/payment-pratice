@@ -109,3 +109,14 @@ databaseChangeLog:
                   type: timestamp
                   constraints:
                     nullable: false
+  - changeSet:
+      id: 5
+      author: LeoJ
+      changes:
+        - sqlFile:
+            dbms: h2
+            encoding: utf8
+            path: sql/test_data.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
