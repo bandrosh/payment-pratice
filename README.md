@@ -18,16 +18,17 @@ Docker-compose
 Set DB environments from postgres database:
 DB_USER ; DB_PASS ; DB_URL
 
-If you have any postgres docker up, just down and execute:
-make build-image
+Steps:
+- make build-image
 
-This command will turn up local database, build project with this local variables and build docker image.
+This command will use your database for build project with this local variables and build docker image.
 
-Docker image: payment-practice 
+- Turn off you database container
+- Run docker-compose up -d
 
-with docker builded. Run docker-compose up -d
+Docker image: payment-practice
+service running in :8080
 
-service will run in :8080
 ```
 
 ### Documentation
