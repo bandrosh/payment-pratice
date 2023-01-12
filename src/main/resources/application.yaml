@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: postgres
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
   liquibase:
     change-log: db/changelog/changelog-master.yaml
     enabled: true
@@ -13,3 +13,5 @@ logging:
     root: INFO
     com.pismo.paymentpractice: DEBUG
 
+server:
+  port: 8080
