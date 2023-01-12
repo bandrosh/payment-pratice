@@ -21,8 +21,15 @@ databaseChangeLog:
       id: 2
       author: LeoJ
       changes:
+        - sqlFile:
+            dbms: postgresql
+            encoding: utf8
+            path: sql/create_operations_type.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
         - createTable:
-            tableName: operationsType
+            tableName: operations_type
             columns:
               - column:
                   name: id
@@ -32,47 +39,47 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: description
-                  type: varchar(50)
+                  type: operations
   - changeSet:
       id: 3
       author: LeoJ
       changes:
         - insert:
-            tableName: operationsType
+            tableName: operations_type
             columns:
               - column:
                   name: id
                   value: "1"
               - column:
                   name: description
-                  value: "Cash Purchases"
+                  value: "CASH_PURCHASES"
         - insert:
-            tableName: operationsType
+            tableName: operations_type
             columns:
               - column:
                   name: id
                   value: "2"
               - column:
                   name: description
-                  value: "Installment Purchases"
+                  value: "INSTALLMENT_PURCHASES"
         - insert:
-            tableName: operationsType
+            tableName: operations_type
             columns:
               - column:
                   name: id
                   value: "3"
               - column:
                   name: description
-                  value: "Withdraw"
+                  value: "WITHDRAW"
         - insert:
-            tableName: operationsType
+            tableName: operations_type
             columns:
               - column:
                   name: id
                   value: "4"
               - column:
                   name: description
-                  value: "Payment"
+                  value: "PAYMENT"
   - changeSet:
       id: 4
       author: LeoJ
@@ -88,14 +95,14 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: accountId
+                  name: account_id
                   type: varchar(50)
                   constraints:
                     nullable: false
                     foreignKeyName: "fk_transaction_account"
                     references: "accounts(id)"
               - column:
-                  name: operationTypeId
+                  name: operation_type_id
                   type: int
                   constraints:
                     nullable: false
@@ -105,7 +112,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: eventDate
+                  name: event_date
                   type: timestamp
                   constraints:
                     nullable: false

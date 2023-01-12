@@ -21,11 +21,11 @@ public class AccountService {
     }
 
     public Account saveAccount(Account account) {
-        var accountModel = new AccountModel();
+        var accountModel = AccountModel.toAccountModel(account);
         try {
-            var databaseAccountCreated = accountRepository.save(accountModel.toAccountModel(account));
+            var databaseAccountCreated = accountRepository.save(accountModel);
             logger.debug(() -> format("User account created. Document Number %s", account.documentNumber()));
-            return accountModel.toAccount(databaseAccountCreated);
+            return databaseAccountCreated.toAccount();
         } catch (Exception e) {
             logger.error(() -> format("Error creating user account. Document number %s.", account.documentNumber()));
             throw new CreateAccountErrorException(e.getMessage());
@@ -33,16 +33,16 @@ public class AccountService {
     }
 
     public Account getUserAccountById(String accountId) {
-        var accountModel = new AccountModel();
-        var account = accountRepository.findById(accountId);
+        var searchedAccount = accountRepository.findById(accountId);
 
-        if (account.isPresent()) {
-            logger.debug(() -> format("Get user account. Account: %s", account.get()));
+        if (searchedAccount.isPresent()) {
+            logger.debug(() -> format("Get user account. Account: %s", searchedAccount.get()));
         } else {
             logger.error(() -> format("User account does not exists. Id: %s", accountId));
         }
 
-        return accountModel.toAccount(account.orElseThrow(
-                () -> new NotFoundErrorException(format("Account is id not found. Id %s", accountId))));
+        return searchedAccount.orElseThrow(
+                        () -> new NotFoundErrorException(format("Account is id not found. Id %s", accountId)))
+                .toAccount();
     }
 }

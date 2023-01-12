@@ -2,6 +2,8 @@ package com.pismo.paymentpractice.integration_tests;
 
 import com.pismo.paymentpractice.controller.dto.AccountDTO;
 import com.pismo.paymentpractice.controller.dto.AccountRequestDTO;
+import com.pismo.paymentpractice.controller.dto.TransactionRequestDTO;
+import com.pismo.paymentpractice.domain.OperationsType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TestIntegrationPaymentSuite {
+    public static final int NEGATIVE_MULTIPLICATIVE = -1;
     @Autowired
     private TestRestTemplate restTemplate;
 
@@ -42,6 +45,40 @@ class TestIntegrationPaymentSuite {
         assertInstanceOf(AccountDTO.class, resultBodyCreatingAccount);
         assertInstanceOf(AccountDTO.class, resultBodyFoundNewAccount);
         assertEquals(resultBodyCreatingAccount, resultBodyFoundNewAccount);
+    }
+
+    @Test
+    void createNewTransactionIntegrationTest() {
+        var accountURL = format("%s/accounts", BASE_URL);
+
+        var accountRequestDTO = new AccountRequestDTO("1234-5678");
+        var responseCreatingAccount = restTemplate.postForEntity(accountURL, accountRequestDTO, AccountDTO.class);
+
+        var statusCreatingAccount = responseCreatingAccount.getStatusCode().value();
+        var resultBodyCreatingAccount = responseCreatingAccount.getBody();
+
+        assert resultBodyCreatingAccount != null;
+
+        var transactionUrl = format("%s/transactions", BASE_URL);
+        var createTransactionDTO = new TransactionRequestDTO(
+                resultBodyCreatingAccount.accountId(), OperationsType.CASH_PURCHASES.getValue(), 11.0);
+
+        var responseCreateTransaction = restTemplate.postForEntity(
+                transactionUrl, createTransactionDTO, TransactionRequestDTO.class);
+
+        var statusPublishTransaction = responseCreateTransaction.getStatusCode().value();
+        var resultBodyPublishTransaction = responseCreateTransaction.getBody();
+
+        assertEquals(HttpStatus.OK.value(), statusCreatingAccount);
+        assertEquals(HttpStatus.OK.value(), statusPublishTransaction);
+
+        assertInstanceOf(AccountDTO.class, resultBodyCreatingAccount);
+        assertInstanceOf(TransactionRequestDTO.class, resultBodyPublishTransaction);
+
+        assert resultBodyPublishTransaction != null;
+        assertEquals(resultBodyPublishTransaction.accountId(), createTransactionDTO.accountId());
+        assertEquals(resultBodyPublishTransaction.operationTypeId(), createTransactionDTO.operationTypeId());
+        assertEquals(resultBodyPublishTransaction.amount() * NEGATIVE_MULTIPLICATIVE, createTransactionDTO.amount());
     }
 
 }

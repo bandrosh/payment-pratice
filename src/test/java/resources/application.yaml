@@ -12,3 +12,6 @@ spring:
     drop-first: false
     default-schema: public
     contexts: test
+  jpa:
+    hibernate:
+      ddl-auto: update

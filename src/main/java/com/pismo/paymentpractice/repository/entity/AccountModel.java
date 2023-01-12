@@ -5,9 +5,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @Entity
 @Table(name = "accounts")
-public class AccountModel {
+public class AccountModel implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 8753769176608953659L;
+
     @Id
     String id;
     String documentNumber;
@@ -21,12 +27,12 @@ public class AccountModel {
         this.documentNumber = documentNumber;
     }
 
-    public AccountModel toAccountModel(Account account) {
+    public static AccountModel toAccountModel(Account account) {
         return new AccountModel(account.id(), account.documentNumber());
     }
 
-    public Account toAccount(AccountModel accountModel) {
-        return new Account(accountModel.getId(), accountModel.getDocumentNumber());
+    public Account toAccount() {
+        return new Account(this.getId(), this.getDocumentNumber());
     }
 
     public String getId() {

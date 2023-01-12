@@ -22,4 +22,11 @@ public class GlobalExceptionHandler {
     public ErrorDTO httpNotFoundErrorExceptionHandler(Exception e) {
         return new ErrorDTO("404 Not Found", e.getMessage());
     }
+
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY) // 404
+    @ExceptionHandler(NotProcessableException.class)
+    @ResponseBody
+    public ErrorDTO httpNotProcessableErrorExceptionHandler(Exception e) {
+        return new ErrorDTO("422 Not Found", e.getMessage());
+    }
 }
