@@ -1,6 +1,6 @@
 package com.pismo.paymentpractice.controller.v1;
 
-import com.pismo.paymentpractice.controller.dto.TransactionRequestDTO;
+import com.pismo.paymentpractice.controller.dto.TransactionDTO;
 import com.pismo.paymentpractice.service.TransactionService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,15 +24,15 @@ public class TransactionController {
     }
 
     @PostMapping("/transactions")
-    public ResponseEntity<TransactionRequestDTO> publishTransaction(@RequestBody TransactionRequestDTO transactionRequestDTO) {
+    public ResponseEntity<TransactionDTO> publishTransaction(@RequestBody TransactionDTO transactionDTO) {
         logger.debug(() ->
-                format("Trying publish new transaction %s", transactionRequestDTO.toString()));
+                format("Trying publish new transaction %s", transactionDTO.toString()));
 
-        var response = transactionService.publishTransaction(transactionRequestDTO.toTransaction());
+        var response = transactionService.publishTransaction(transactionDTO.toTransaction());
 
         logger.debug(() ->
                 format("Transaction performed: %s", response.toString()));
-        return ResponseEntity.ok(new TransactionRequestDTO(response.accountId(), response.operationTypeId(),
+        return ResponseEntity.ok(new TransactionDTO(response.accountId(), response.operationTypeId(),
                 response.amount()));
     }
 }

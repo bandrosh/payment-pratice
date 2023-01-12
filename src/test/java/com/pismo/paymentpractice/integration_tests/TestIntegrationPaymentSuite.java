@@ -2,7 +2,7 @@ package com.pismo.paymentpractice.integration_tests;
 
 import com.pismo.paymentpractice.controller.dto.AccountDTO;
 import com.pismo.paymentpractice.controller.dto.AccountRequestDTO;
-import com.pismo.paymentpractice.controller.dto.TransactionRequestDTO;
+import com.pismo.paymentpractice.controller.dto.TransactionDTO;
 import com.pismo.paymentpractice.domain.OperationsType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,11 +60,11 @@ class TestIntegrationPaymentSuite {
         assert resultBodyCreatingAccount != null;
 
         var transactionUrl = format("%s/transactions", BASE_URL);
-        var createTransactionDTO = new TransactionRequestDTO(
+        var createTransactionDTO = new TransactionDTO(
                 resultBodyCreatingAccount.accountId(), OperationsType.CASH_PURCHASES.getValue(), 11.0);
 
         var responseCreateTransaction = restTemplate.postForEntity(
-                transactionUrl, createTransactionDTO, TransactionRequestDTO.class);
+                transactionUrl, createTransactionDTO, TransactionDTO.class);
 
         var statusPublishTransaction = responseCreateTransaction.getStatusCode().value();
         var resultBodyPublishTransaction = responseCreateTransaction.getBody();
@@ -73,7 +73,7 @@ class TestIntegrationPaymentSuite {
         assertEquals(HttpStatus.OK.value(), statusPublishTransaction);
 
         assertInstanceOf(AccountDTO.class, resultBodyCreatingAccount);
-        assertInstanceOf(TransactionRequestDTO.class, resultBodyPublishTransaction);
+        assertInstanceOf(TransactionDTO.class, resultBodyPublishTransaction);
 
         assert resultBodyPublishTransaction != null;
         assertEquals(resultBodyPublishTransaction.accountId(), createTransactionDTO.accountId());

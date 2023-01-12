@@ -1,0 +1,123 @@
+swagger: "2.0"
+info:
+  title: Payment Practice API
+  description: API for manage user payment transaction and create new accounts.
+  version: 1.0.0
+
+host: blablabla.com
+basePath: /api/v1/
+schemes:
+  - https
+
+paths:
+  /accounts:
+    post:
+      summary: Create user account with document number.
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: "body"
+          description: "Client document number to save in accounts"
+          required: true
+          schema:
+            $ref: "#/definitions/AccountRequestDTO"
+
+      responses:
+        200:
+          description: Ok
+          schema:
+            items:
+              $ref: "#/definitions/AccountDTO"
+        400:
+          description: Bad Request
+          schema:
+            items:
+              $ref: "#/definitions/ErrorDTO"
+
+  /accounts/{accountId}:
+    get:
+      summary: Get user account by account id.
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: accountId
+          description: Account ID
+          required: true
+          type: string
+
+      responses:
+        200:
+          description: OK
+          schema:
+            items:
+              $ref: "#/definitions/AccountDTO"
+        404:
+          description: User account Not Found
+          schema:
+            items:
+              $ref: "#/definitions/ErrorDTO"
+
+  /transactions:
+    post:
+      summary: Publish user account payment transaction
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: "body"
+          description: "User account client payment transaction"
+          required: true
+          schema:
+            $ref: "#/definitions/TransactionDTO"
+      responses:
+        200:
+          description: OK
+          schema:
+            items:
+              $ref: "#/definitions/AccountDTO"
+        404:
+          description: User account Not Found or Operation Type id not found
+          schema:
+            items:
+              $ref: "#/definitions/ErrorDTO"
+        422:
+          description: Cannot process transaction
+          schema:
+            items:
+              $ref: "#/definitions/ErrorDTO"
+
+definitions:
+  AccountRequestDTO:
+    type: object
+    properties:
+      document_number:
+        type: string
+
+  AccountDTO:
+    type: object
+    properties:
+      id:
+        type: string
+      document_number:
+        type: string
+
+  TransactionDTO:
+    type: object
+    properties:
+      account_id:
+        type: string
+      operation_type_id:
+        type: integer
+      amount:
+        type: number
+
+
+  ErrorDTO:
+    type: object
+    properties:
+      message:
+        type: string
+      exception:
+        type: string
