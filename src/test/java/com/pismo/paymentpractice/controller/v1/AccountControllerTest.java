@@ -1,8 +1,7 @@
-package com.pismo.paymentpractice.controller;
+package com.pismo.paymentpractice.controller.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pismo.paymentpractice.controller.dto.AccountRequestDTO;
-import com.pismo.paymentpractice.controller.v1.AccountController;
 import com.pismo.paymentpractice.domain.Account;
 import com.pismo.paymentpractice.exception.NotFoundErrorException;
 import com.pismo.paymentpractice.service.AccountService;
@@ -20,7 +19,9 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AccountController.class)
 class AccountControllerTest {

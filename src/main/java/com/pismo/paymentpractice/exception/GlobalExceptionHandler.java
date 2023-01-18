@@ -27,6 +27,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotProcessableException.class)
     @ResponseBody
     public ErrorDTO httpNotProcessableErrorExceptionHandler(Exception e) {
-        return new ErrorDTO("422 Not Found", e.getMessage());
+        return new ErrorDTO("422 Unprocessable Request", e.getMessage());
     }
 }
