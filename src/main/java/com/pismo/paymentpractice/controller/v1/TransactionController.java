@@ -2,6 +2,7 @@ package com.pismo.paymentpractice.controller.v1;
 
 import com.pismo.paymentpractice.controller.dto.TransactionDTO;
 import com.pismo.paymentpractice.service.TransactionService;
+import jakarta.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class TransactionController {
     }
 
     @PostMapping("/transactions")
-    public ResponseEntity<TransactionDTO> publishTransaction(@RequestBody TransactionDTO transactionDTO) {
+    public ResponseEntity<TransactionDTO> publishTransaction(@Valid @RequestBody TransactionDTO transactionDTO) {
         logger.debug(() ->
                 format("Trying publish new transaction %s", transactionDTO.toString()));
 

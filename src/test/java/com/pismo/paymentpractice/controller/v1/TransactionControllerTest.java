@@ -50,6 +50,18 @@ class TransactionControllerTest {
     }
 
     @Test
+    void whenTrySaveNewUserTransactionWithNegativeAMountThenReturn400() throws Exception {
+        var transactionDTO = new TransactionDTO("accountId", 1, -10.0);
+
+        mockMvc.perform(post("/api/v1/transactions")
+                       .contentType(MediaType.APPLICATION_JSON)
+                       .accept(MediaType.APPLICATION_JSON)
+                       .content(objectMapper.writeValueAsString(transactionDTO))
+               )
+               .andExpect(status().isBadRequest());
+    }
+
+    @Test
     void whenTrySaveNewUserTransactionWithNotValidBodyThenReturn400() throws Exception {
         mockMvc.perform(post("/api/v1/transactions")
                        .contentType(MediaType.APPLICATION_JSON)
@@ -94,4 +106,6 @@ class TransactionControllerTest {
                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                .andExpect(jsonPath("errorCode").value("422 Unprocessable Request"));
     }
+
+
 }

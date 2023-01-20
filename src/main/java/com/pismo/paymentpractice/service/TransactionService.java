@@ -33,10 +33,10 @@ public class TransactionService {
         logger.debug(() -> format("Check if valid operations by if. %d", transaction.operationTypeId()));
         var operation = operationsTypeService.getOperationTypeById(transaction.operationTypeId());
 
-        var transactionModel = TransactionModel.toTransactionModel(transaction);
-
         logger.debug(() -> format("Check if exists user account by id. %s", transaction.accountId()));
         var userAccount = accountService.getUserAccountById(transaction.accountId());
+
+        var transactionModel = TransactionModel.toTransactionModel(transaction);
 
         transactionModel.setAccount(AccountModel.toAccountModel(userAccount));
 
